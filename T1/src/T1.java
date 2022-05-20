@@ -20,10 +20,11 @@ import javax.swing.JTextPane;
 
 public class T1 {
 
-	private JFrame frame;
+	private JFrame frmBlackwaterResortReservation;
 	private JTextField textField_End;
 	private JTextField textField_Start;
 	private JTextField textField_Person;
+	int[][] Buchungen = new int[11][4];
 
 	/**
 	 * Launch the application.
@@ -33,7 +34,7 @@ public class T1 {
 			public void run() {
 				try {
 					T1 window = new T1();
-					window.frame.setVisible(true);
+					window.frmBlackwaterResortReservation.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -52,11 +53,18 @@ public class T1 {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.getContentPane().setBackground(Color.WHITE);
+		
+		frmBlackwaterResortReservation = new JFrame();
+		frmBlackwaterResortReservation.setTitle("Blackwater Resort Reservation Tool");
+		frmBlackwaterResortReservation.getContentPane().setBackground(Color.WHITE);
 		
 		JLayeredPane layeredPane = new JLayeredPane();
-		frame.getContentPane().add(layeredPane, BorderLayout.CENTER);
+		frmBlackwaterResortReservation.getContentPane().add(layeredPane, BorderLayout.CENTER);
+		
+		JLabel lblTheFlyingDuchman = new JLabel("Blackwater Resort");
+		lblTheFlyingDuchman.setFont(new Font("Tempus Sans ITC", Font.BOLD | Font.ITALIC, 30));
+		lblTheFlyingDuchman.setBounds(10, 11, 471, 40);
+		layeredPane.add(lblTheFlyingDuchman);
 		
 		JLabel lblStartWoche = new JLabel("Start-Woche:");
 		lblStartWoche.setFont(new Font("Century Gothic", Font.PLAIN, 16));
@@ -78,21 +86,6 @@ public class T1 {
 		textField_Start.setBounds(180, 80, 180, 40);
 		layeredPane.add(textField_Start);
 		
-		JLabel lblTheFlyingDuchman = new JLabel("Blackwater Resort");
-		lblTheFlyingDuchman.setFont(new Font("Tempus Sans ITC", Font.BOLD | Font.ITALIC, 30));
-		lblTheFlyingDuchman.setBounds(10, 11, 471, 40);
-		layeredPane.add(lblTheFlyingDuchman);
-		
-		JButton btnNewButton = new JButton("Browse Bungalows");
-		btnNewButton.setFont(new Font("Century Gothic", Font.ITALIC, 15));
-		btnNewButton.setBackground(Color.WHITE);
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNewButton.setBounds(540, 130, 180, 40);
-		layeredPane.add(btnNewButton);
-		
 		JProgressBar progressBar = new JProgressBar();
 		progressBar.setBackground(Color.CYAN);
 		progressBar.setForeground(Color.CYAN);
@@ -102,7 +95,7 @@ public class T1 {
 		JLabel lblAvailableBungalos = new JLabel("Select Bungalo:");
 		lblAvailableBungalos.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		lblAvailableBungalos.setBounds(10, 224, 160, 40);
-		layeredPane.add(lblAvailableBungalos);
+
 		
 		JLabel lblAnzahlPersonen = new JLabel("Anzahl Personen:");
 		lblAnzahlPersonen.setFont(new Font("Century Gothic", Font.PLAIN, 16));
@@ -114,86 +107,164 @@ public class T1 {
 		textField_Person.setBounds(540, 80, 180, 40);
 		layeredPane.add(textField_Person);
 		
-		JTextPane textPane = new JTextPane();
-		textPane.setBackground(new Color(0, 255, 127));
-		textPane.setText("1");
-		textPane.setBounds(180, 224, 100, 40);
-		layeredPane.add(textPane);
+		//TEXTPANES
+		JTextPane textPane_B1 = new JTextPane();
+		textPane_B1.setBackground(new Color(0, 255, 127));
+		textPane_B1.setText("1");
+		textPane_B1.setBounds(180, 224, 100, 40);
 		
-		JTextPane textPane_1 = new JTextPane();
-		textPane_1.setBackground(new Color(0, 255, 127));
-		textPane_1.setText("2");
-		textPane_1.setBounds(290, 224, 100, 40);
-		layeredPane.add(textPane_1);
+		JTextPane textPane_B2 = new JTextPane();
+		textPane_B2.setBackground(new Color(0, 255, 127));
+		textPane_B2.setText("2");
+		textPane_B2.setBounds(180, 293, 100, 40);
+
+		JTextPane textPane_B6 = new JTextPane();
+		textPane_B6.setBackground(new Color(0, 255, 127));
+		textPane_B6.setText("6");
+		textPane_B6.setBounds(400, 293, 100, 40);
 		
-		JTextPane textPane_1_1 = new JTextPane();
-		textPane_1_1.setBackground(new Color(0, 255, 127));
-		textPane_1_1.setText("6");
-		textPane_1_1.setBounds(180, 320, 80, 40);
-		layeredPane.add(textPane_1_1);
+		JTextPane textPane_B7 = new JTextPane();
+		textPane_B7.setText("7");
+		textPane_B7.setBackground(new Color(0, 255, 127));
+		textPane_B7.setBounds(510, 224, 100, 40);
 		
-		JTextPane textPane_1_1_1 = new JTextPane();
-		textPane_1_1_1.setText("7");
-		textPane_1_1_1.setBackground(new Color(0, 255, 127));
-		textPane_1_1_1.setBounds(280, 320, 80, 40);
-		layeredPane.add(textPane_1_1_1);
+		JTextPane textPane_B4 = new JTextPane();
+		textPane_B4.setText("4");
+		textPane_B4.setBackground(new Color(0, 255, 127));
+		textPane_B4.setBounds(290, 293, 100, 40);
+
+		JTextPane textPane_B5 = new JTextPane();
+		textPane_B5.setText("5");
+		textPane_B5.setBackground(new Color(0, 255, 127));
+		textPane_B5.setBounds(400, 224, 100, 40);
+
+		JTextPane textPane_B9 = new JTextPane();
+		textPane_B9.setText("9");
+		textPane_B9.setBackground(new Color(0, 255, 127));
+		textPane_B9.setBounds(620, 224, 100, 40);
 		
-		JTextPane textPane_1_1_1_1 = new JTextPane();
-		textPane_1_1_1_1.setText("4");
-		textPane_1_1_1_1.setBackground(new Color(0, 255, 127));
-		textPane_1_1_1_1.setBounds(510, 224, 100, 40);
-		layeredPane.add(textPane_1_1_1_1);
+		JTextPane textPane_B10 = new JTextPane();
+		textPane_B10.setText("10");
+		textPane_B10.setBackground(new Color(0, 255, 127));
+		textPane_B10.setBounds(620, 293, 100, 40);
 		
-		JTextPane textPane_1_1_1_2 = new JTextPane();
-		textPane_1_1_1_2.setText("5");
-		textPane_1_1_1_2.setBackground(new Color(0, 255, 127));
-		textPane_1_1_1_2.setBounds(620, 224, 100, 40);
-		layeredPane.add(textPane_1_1_1_2);
+		JTextPane textPane_B3 = new JTextPane();
+		textPane_B3.setText("3");
+		textPane_B3.setBackground(new Color(0, 255, 127));
+		textPane_B3.setBounds(290, 224, 100, 40);
 		
-		JTextPane textPane_1_1_1_3 = new JTextPane();
-		textPane_1_1_1_3.setText("9");
-		textPane_1_1_1_3.setBackground(new Color(0, 255, 127));
-		textPane_1_1_1_3.setBounds(540, 320, 80, 40);
-		layeredPane.add(textPane_1_1_1_3);
+		JTextPane textPane_B8 = new JTextPane();
+		textPane_B8.setText("8");
+		textPane_B8.setBackground(new Color(0, 255, 127));
+		textPane_B8.setBounds(510, 293, 100, 40);
 		
-		JTextPane textPane_1_1_1_4 = new JTextPane();
-		textPane_1_1_1_4.setText("10");
-		textPane_1_1_1_4.setBackground(new Color(0, 255, 127));
-		textPane_1_1_1_4.setBounds(640, 320, 80, 40);
-		layeredPane.add(textPane_1_1_1_4);
 		
-		JTextPane textPane_1_1_1_5 = new JTextPane();
-		textPane_1_1_1_5.setText("3");
-		textPane_1_1_1_5.setBackground(new Color(0, 255, 127));
-		textPane_1_1_1_5.setBounds(400, 224, 100, 40);
-		layeredPane.add(textPane_1_1_1_5);
+		//SELECTORS
+		JRadioButton rdbtn_p1 = new JRadioButton("2 Persons");
+		rdbtn_p1.setBounds(180, 264, 100, 23);
 		
-		JTextPane textPane_1_1_1_5_1 = new JTextPane();
-		textPane_1_1_1_5_1.setText("8");
-		textPane_1_1_1_5_1.setBackground(new Color(0, 255, 127));
-		textPane_1_1_1_5_1.setBounds(370, 320, 160, 40);
-		layeredPane.add(textPane_1_1_1_5_1);
+		JRadioButton rdbtn_p4 = new JRadioButton("4 Persons");
+		rdbtn_p4.setBounds(290, 333, 100, 23);
 		
-		JRadioButton rdbtnPersons = new JRadioButton("2 Persons");
-		rdbtnPersons.setBounds(180, 264, 100, 23);
-		layeredPane.add(rdbtnPersons);
+		JRadioButton rdbtn_p10 = new JRadioButton("10 Persons");
+		rdbtn_p10.setBounds(620, 333, 100, 23);
 		
-		JRadioButton rdbtnPersons_1 = new JRadioButton("4 Persons");
-		rdbtnPersons_1.setBounds(290, 264, 100, 23);
-		layeredPane.add(rdbtnPersons_1);
+		JRadioButton rdbtn_p7 = new JRadioButton("8 Persons");
+		rdbtn_p7.setBounds(510, 264, 100, 23);
 		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("10 Persons");
-		rdbtnNewRadioButton.setBounds(400, 264, 100, 23);
-		layeredPane.add(rdbtnNewRadioButton);
+		JRadioButton rdbtn_p9 = new JRadioButton("10 Persons");
+		rdbtn_p9.setBounds(620, 264, 100, 23);
 		
-		JRadioButton rdbtnpersons = new JRadioButton("6 Persons");
-		rdbtnpersons.setBounds(510, 264, 100, 23);
-		layeredPane.add(rdbtnpersons);
+		JRadioButton rdbtn_p8 = new JRadioButton("8 Persons");
+		rdbtn_p8.setBounds(510, 333, 100, 23);
 		
-		JRadioButton rdbtnPersons_2 = new JRadioButton("8 Persons");
-		rdbtnPersons_2.setBounds(620, 264, 100, 23);
-		layeredPane.add(rdbtnPersons_2);
-		frame.setBounds(100, 100, 800, 550);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		JRadioButton rdbtn_p6 = new JRadioButton("6 Persons");
+		rdbtn_p6.setBounds(400, 333, 100, 23);
+		
+		JRadioButton rdbtn_p2 = new JRadioButton("2 Persons");
+		rdbtn_p2.setBounds(180, 333, 100, 23);
+		
+		JRadioButton rdbtn_p3 = new JRadioButton("4 Persons");
+		rdbtn_p3.setBounds(290, 264, 100, 23);
+		
+		JRadioButton rdbtn_p5 = new JRadioButton("6 Persons");
+		rdbtn_p5.setBounds(400, 264, 100, 23);
+
+		
+		//BUTTONS
+		JButton btnReserve = new JButton("Reserve Bungalow");
+		btnReserve.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnReserve.setFont(new Font("Dialog", Font.ITALIC, 15));
+		btnReserve.setBackground(Color.WHITE);
+		btnReserve.setBounds(180, 362, 210, 40);
+		
+		layeredPane.add(lblAvailableBungalos);
+		
+		layeredPane.add(textPane_B1);
+		layeredPane.add(textPane_B2);
+		layeredPane.add(textPane_B3);
+		layeredPane.add(textPane_B4);
+		layeredPane.add(textPane_B5);
+		layeredPane.add(textPane_B6);
+		layeredPane.add(textPane_B7);
+		layeredPane.add(textPane_B8);
+		layeredPane.add(textPane_B9);
+		layeredPane.add(textPane_B10);
+		
+		layeredPane.add(rdbtn_p1);
+		layeredPane.add(rdbtn_p2);
+		layeredPane.add(rdbtn_p3);
+		layeredPane.add(rdbtn_p4);
+		layeredPane.add(rdbtn_p5);
+		layeredPane.add(rdbtn_p6);
+		layeredPane.add(rdbtn_p7);
+		layeredPane.add(rdbtn_p8);
+		layeredPane.add(rdbtn_p9);
+		layeredPane.add(rdbtn_p10);
+		
+		layeredPane.add(btnReserve);
+		
+		JButton btnBrowse = new JButton("Browse Bungalows");
+		btnBrowse.setFont(new Font("Century Gothic", Font.ITALIC, 15));
+		btnBrowse.setBackground(Color.WHITE);
+		btnBrowse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				layeredPane.add(lblAvailableBungalos);
+				
+				layeredPane.add(textPane_B1);
+				layeredPane.add(textPane_B2);
+				layeredPane.add(textPane_B3);
+				layeredPane.add(textPane_B4);
+				layeredPane.add(textPane_B5);
+				layeredPane.add(textPane_B6);
+				layeredPane.add(textPane_B7);
+				layeredPane.add(textPane_B8);
+				layeredPane.add(textPane_B9);
+				layeredPane.add(textPane_B10);
+				
+				layeredPane.add(rdbtn_p1);
+				layeredPane.add(rdbtn_p2);
+				layeredPane.add(rdbtn_p3);
+				layeredPane.add(rdbtn_p4);
+				layeredPane.add(rdbtn_p5);
+				layeredPane.add(rdbtn_p6);
+				layeredPane.add(rdbtn_p7);
+				layeredPane.add(rdbtn_p8);
+				layeredPane.add(rdbtn_p9);
+				layeredPane.add(rdbtn_p10);
+				
+				layeredPane.add(btnReserve);
+			}
+		});
+		btnBrowse.setBounds(540, 130, 180, 40);
+		layeredPane.add(btnBrowse);
+
+		frmBlackwaterResortReservation.setBounds(100, 100, 800, 550);
+		frmBlackwaterResortReservation.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 }
