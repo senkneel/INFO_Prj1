@@ -1,3 +1,9 @@
+/* VERSION DAY0
+ * -SOLL DIE FRONT SEIN
+ * -AUTHOR - LEONARD
+ * 
+ * 
+ */
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
