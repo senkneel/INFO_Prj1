@@ -1,4 +1,4 @@
-/* VERSION DAY0
+/* VERSION DAY1
  * -SOLL DIE FRONT SEIN
  * -AUTHOR - LEONARD
  * 
@@ -30,7 +30,7 @@ public class T1 {
 	private JTextField textField_End;
 	private JTextField textField_Start;
 	private JTextField textField_Person;
-	int[][] Buchungen = new int[11][4];
+	int[] Buchung = new int[4];
 
 	/**
 	 * Launch the application.
@@ -201,6 +201,8 @@ public class T1 {
 		JButton btnReserve = new JButton("Reserve Bungalow");
 		btnReserve.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Backbone.reserve(1,Integer.parseInt(textField_Start.getText()),Integer.parseInt(textField_End.getText()),Integer.parseInt(textField_Person.getText()), 2);
+				
 			}
 		});
 		btnReserve.setFont(new Font("Dialog", Font.ITALIC, 15));
