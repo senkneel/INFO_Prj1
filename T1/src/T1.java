@@ -1,4 +1,4 @@
-/* VERSION DAY1
+/* VERSION DAY3
  * -SOLL DIE FRONT SEIN
  * -AUTHOR - LEONARD
  * 
@@ -23,6 +23,10 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextPane;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import javax.swing.JTextArea;
+import javax.swing.JSpinner;
 
 public class T1 {
 
@@ -30,7 +34,6 @@ public class T1 {
 	private JTextField textField_End;
 	private JTextField textField_Start;
 	private JTextField textField_Person;
-	int[] Buchung = new int[4];
 
 	/**
 	 * Launch the application.
@@ -67,7 +70,7 @@ public class T1 {
 		JLayeredPane layeredPane = new JLayeredPane();
 		frmBlackwaterResortReservation.getContentPane().add(layeredPane, BorderLayout.CENTER);
 		
-		JLabel lblTheFlyingDuchman = new JLabel("Blackwater Resort");
+		JLabel lblTheFlyingDuchman = new JLabel("Blackwater Resort Reservation");
 		lblTheFlyingDuchman.setFont(new Font("Tempus Sans ITC", Font.BOLD | Font.ITALIC, 30));
 		lblTheFlyingDuchman.setBounds(10, 11, 471, 40);
 		layeredPane.add(lblTheFlyingDuchman);
@@ -95,7 +98,7 @@ public class T1 {
 		JProgressBar progressBar = new JProgressBar();
 		progressBar.setBackground(Color.CYAN);
 		progressBar.setForeground(Color.CYAN);
-		progressBar.setBounds(0, 497, 784, 14);
+		progressBar.setBounds(0, 499, 780, 14);
 		layeredPane.add(progressBar);
 		
 		JLabel lblAvailableBungalos = new JLabel("Select Bungalo:");
@@ -271,8 +274,31 @@ public class T1 {
 		});
 		btnBrowse.setBounds(540, 130, 180, 40);
 		layeredPane.add(btnBrowse);
+		
+		JSeparator separator = new JSeparator();
+		separator.setOrientation(SwingConstants.VERTICAL);
+		separator.setBounds(780, 0, 5, 510);
+		layeredPane.add(separator);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setBounds(795, 159, 281, 344);
+		layeredPane.add(textArea);
+		
+		JLabel lblBungalo = new JLabel("Bungalo:");
+		lblBungalo.setFont(new Font("Dialog", Font.PLAIN, 16));
+		lblBungalo.setBounds(795, 80, 75, 40);
+		layeredPane.add(lblBungalo);
+		
+		JLabel lblCheck = new JLabel("Check Reservation");
+		lblCheck.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 30));
+		lblCheck.setBounds(795, 11, 471, 40);
+		layeredPane.add(lblCheck);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(880, 80, 60, 40);
+		layeredPane.add(comboBox);
 
-		frmBlackwaterResortReservation.setBounds(100, 100, 800, 550);
+		frmBlackwaterResortReservation.setBounds(100, 100, 1100, 550);
 		frmBlackwaterResortReservation.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 }
