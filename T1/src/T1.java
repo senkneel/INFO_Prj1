@@ -1,4 +1,4 @@
-/* VERSION DAY7
+/* VERSION DAY8
  * -SOLL DIE FRONT SEIN
  * -AUTHOR = LEONARD
  * -Backbone wurde in T1 aufgelöst
@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Random;
 import java.awt.event.ActionEvent;
 import javax.swing.JFormattedTextField;
@@ -50,7 +51,7 @@ public class T1 {
 	public JRadioButton rdbtn_p9;
 	public JRadioButton rdbtn_p10;
 	protected JComboBox combo_select;
-	int[][] Buchungen = new int[11][5];;
+	public ArrayList<Reservierung> reservierungen;
 	int nr=0;
 	int bnr=0;
 	Random random;
@@ -84,6 +85,7 @@ public class T1 {
 	private void initialize() {
 		
 		random = new Random();
+		reservierungen = new ArrayList<Reservierung>();
 		
 		frmBlackwaterResortReservation = new JFrame();
 		frmBlackwaterResortReservation.setTitle("Blackwater Resort Reservation Tool");
@@ -234,35 +236,85 @@ public class T1 {
 			public void actionPerformed(ActionEvent e) {
 				
 				reserve(Integer.parseInt(textField_Start.getText()),Integer.parseInt(textField_End.getText()),Integer.parseInt(textField_Person.getText()));
-				nr=nr+1;
+			
+			
+				textPane_B1.setVisible(false);
+				textPane_B2.setVisible(false);
+				textPane_B3.setVisible(false);
+				textPane_B4.setVisible(false);
+				textPane_B5.setVisible(false);
+				textPane_B6.setVisible(false);
+				textPane_B7.setVisible(false);
+				textPane_B8.setVisible(false);
+				textPane_B9.setVisible(false);
+				textPane_B10.setVisible(false);
+			
+				rdbtn_p1.setVisible(false);
+				rdbtn_p2.setVisible(false);
+				rdbtn_p3.setVisible(false);
+				rdbtn_p4.setVisible(false);
+				rdbtn_p5.setVisible(false);
+				rdbtn_p6.setVisible(false);
+				rdbtn_p7.setVisible(false);
+				rdbtn_p8.setVisible(false);
+				rdbtn_p9.setVisible(false);
+				rdbtn_p10.setVisible(false);
+				
+				btnReserve.setVisible(false);
 			}
 		});
 		
-//		layeredPane.add(lblAvailableBungalos);
-//		
-//		layeredPane.add(textPane_B1);
-//		layeredPane.add(textPane_B2);
-//		layeredPane.add(textPane_B3);
-//		layeredPane.add(textPane_B4);
-//		layeredPane.add(textPane_B5);
-//		layeredPane.add(textPane_B6);
-//		layeredPane.add(textPane_B7);
-//		layeredPane.add(textPane_B8);
-//		layeredPane.add(textPane_B9);
-//		layeredPane.add(textPane_B10);
-//		
-//		layeredPane.add(rdbtn_p1);
-//		layeredPane.add(rdbtn_p2);
-//		layeredPane.add(rdbtn_p3);
-//		layeredPane.add(rdbtn_p4);
-//		layeredPane.add(rdbtn_p5);
-//		layeredPane.add(rdbtn_p6);
-//		layeredPane.add(rdbtn_p7);
-//		layeredPane.add(rdbtn_p8);
-//		layeredPane.add(rdbtn_p9);
-//		layeredPane.add(rdbtn_p10);
-//		
-//		layeredPane.add(btnReserve);
+		layeredPane.add(lblAvailableBungalos);
+		
+		layeredPane.add(textPane_B1);
+		layeredPane.add(textPane_B2);
+		layeredPane.add(textPane_B3);
+		layeredPane.add(textPane_B4);
+		layeredPane.add(textPane_B5);
+		layeredPane.add(textPane_B6);
+		layeredPane.add(textPane_B7);
+		layeredPane.add(textPane_B8);
+		layeredPane.add(textPane_B9);
+		layeredPane.add(textPane_B10);
+		
+		layeredPane.add(rdbtn_p1);
+		layeredPane.add(rdbtn_p2);
+		layeredPane.add(rdbtn_p3);
+		layeredPane.add(rdbtn_p4);
+		layeredPane.add(rdbtn_p5);
+		layeredPane.add(rdbtn_p6);
+		layeredPane.add(rdbtn_p7);
+		layeredPane.add(rdbtn_p8);
+		layeredPane.add(rdbtn_p9);
+		layeredPane.add(rdbtn_p10);
+		
+		layeredPane.add(btnReserve);
+		
+		lblAvailableBungalos.setVisible(false);
+		
+		textPane_B1.setVisible(false);
+		textPane_B2.setVisible(false);
+		textPane_B3.setVisible(false);
+		textPane_B4.setVisible(false);
+		textPane_B5.setVisible(false);
+		textPane_B6.setVisible(false);
+		textPane_B7.setVisible(false);
+		textPane_B8.setVisible(false);
+		textPane_B9.setVisible(false);
+		textPane_B10.setVisible(false);
+	
+		rdbtn_p1.setVisible(false);
+		rdbtn_p2.setVisible(false);
+		rdbtn_p3.setVisible(false);
+		rdbtn_p4.setVisible(false);
+		rdbtn_p5.setVisible(false);
+		rdbtn_p6.setVisible(false);
+		rdbtn_p7.setVisible(false);
+		rdbtn_p8.setVisible(false);
+		rdbtn_p9.setVisible(false);
+		rdbtn_p10.setVisible(false);
+		
+		btnReserve.setVisible(false);
 		
 		btnReserve.setFont(new Font("Dialog", Font.ITALIC, 15));
 		btnReserve.setBackground(Color.WHITE);
@@ -274,10 +326,7 @@ public class T1 {
 		btnBrowse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				
-				layeredPane.add(lblAvailableBungalos);
-				
-				if(Integer.parseInt(textField_Person.getText())> 2 && Integer.parseInt(textField_Person.getText()) < 4) {
+				if(Integer.parseInt(textField_Person.getText())> 2 && Integer.parseInt(textField_Person.getText()) <= 4) {
 					textPane_B1.setBackground(Color.RED);
 					textPane_B2.setBackground(Color.RED);
 					textPane_B3.setBackground(Color.GREEN);
@@ -291,8 +340,15 @@ public class T1 {
 					
 					rdbtn_p1.setEnabled(false);
 					rdbtn_p2.setEnabled(false);
+					rdbtn_p3.setEnabled(true);
+					rdbtn_p4.setEnabled(true);
+					rdbtn_p5.setEnabled(true);
+					rdbtn_p6.setEnabled(true);
+					rdbtn_p7.setEnabled(true);
+					rdbtn_p8.setEnabled(true);
+
 				}
-				if(Integer.parseInt(textField_Person.getText())> 4 && Integer.parseInt(textField_Person.getText()) < 6) {
+				if(Integer.parseInt(textField_Person.getText())> 4 && Integer.parseInt(textField_Person.getText()) <= 6) {
 					textPane_B1.setBackground(Color.RED);
 					textPane_B2.setBackground(Color.RED);
 					textPane_B3.setBackground(Color.RED);
@@ -308,8 +364,12 @@ public class T1 {
 					rdbtn_p2.setEnabled(false);
 					rdbtn_p3.setEnabled(false);
 					rdbtn_p4.setEnabled(false);
+					rdbtn_p5.setEnabled(true);
+					rdbtn_p6.setEnabled(true);
+					rdbtn_p7.setEnabled(true);
+					rdbtn_p8.setEnabled(true);
 				}
-				if(Integer.parseInt(textField_Person.getText())> 6 && Integer.parseInt(textField_Person.getText()) < 8) {
+				if(Integer.parseInt(textField_Person.getText())> 6 && Integer.parseInt(textField_Person.getText()) <= 8) {
 					textPane_B1.setBackground(Color.RED);
 					textPane_B2.setBackground(Color.RED);
 					textPane_B3.setBackground(Color.RED);
@@ -327,8 +387,10 @@ public class T1 {
 					rdbtn_p4.setEnabled(false);
 					rdbtn_p5.setEnabled(false);
 					rdbtn_p6.setEnabled(false);
+					rdbtn_p7.setEnabled(true);
+					rdbtn_p8.setEnabled(true);
 				}
-				if(Integer.parseInt(textField_Person.getText())> 8 && Integer.parseInt(textField_Person.getText()) < 10) {
+				if(Integer.parseInt(textField_Person.getText())> 8 && Integer.parseInt(textField_Person.getText()) <= 10) {
 					textPane_B1.setBackground(Color.RED);
 					textPane_B2.setBackground(Color.RED);
 					textPane_B3.setBackground(Color.RED);
@@ -350,31 +412,30 @@ public class T1 {
 					rdbtn_p8.setEnabled(false);
 				}
 				
+					textPane_B1.setVisible(true);
+					textPane_B2.setVisible(true);
+					textPane_B3.setVisible(true);
+					textPane_B4.setVisible(true);
+					textPane_B5.setVisible(true);
+					textPane_B6.setVisible(true);
+					textPane_B7.setVisible(true);
+					textPane_B8.setVisible(true);
+					textPane_B9.setVisible(true);
+					textPane_B10.setVisible(true);
 				
+					rdbtn_p1.setVisible(true);
+					rdbtn_p2.setVisible(true);
+					rdbtn_p3.setVisible(true);
+					rdbtn_p4.setVisible(true);
+					rdbtn_p5.setVisible(true);
+					rdbtn_p6.setVisible(true);
+					rdbtn_p7.setVisible(true);
+					rdbtn_p8.setVisible(true);
+					rdbtn_p9.setVisible(true);
+					rdbtn_p10.setVisible(true);
+					
+					btnReserve.setVisible(true);
 				
-				layeredPane.add(textPane_B1);
-				layeredPane.add(textPane_B2);
-				layeredPane.add(textPane_B3);
-				layeredPane.add(textPane_B4);
-				layeredPane.add(textPane_B5);
-				layeredPane.add(textPane_B6);
-				layeredPane.add(textPane_B7);
-				layeredPane.add(textPane_B8);
-				layeredPane.add(textPane_B9);
-				layeredPane.add(textPane_B10);
-				
-				layeredPane.add(rdbtn_p1);
-				layeredPane.add(rdbtn_p2);
-				layeredPane.add(rdbtn_p3);
-				layeredPane.add(rdbtn_p4);
-				layeredPane.add(rdbtn_p5);
-				layeredPane.add(rdbtn_p6);
-				layeredPane.add(rdbtn_p7);
-				layeredPane.add(rdbtn_p8);
-				layeredPane.add(rdbtn_p9);
-				layeredPane.add(rdbtn_p10);
-				
-				layeredPane.add(btnReserve);
 			}
 		});
 		btnBrowse.setBounds(540, 130, 180, 40);
@@ -474,69 +535,55 @@ public class T1 {
 			if(rdbtn_p10.isSelected()) 
 				bnr=10;
 			
-		for (int i = 0; i < nr+1; i++) {
-			 if(Buchungen[i][0]== bnr) {
-				 if(start >= Buchungen[i][1] && start <= Buchungen[i][2] || end >= Buchungen[i][1] && end <= Buchungen[i][2]) {
+			versuch(start, end, pers);
+	}}
+	
+	
+	public void versuch(int start, int end, int pers) {
+		
+		for (Reservierung reservierung : reservierungen) {
+			 if(reservierung.bnr == bnr) {
+				 if(start >= reservierung.start && start <= reservierung.end || end >= reservierung.start && end <= reservierung.end) {
 					 
 					 text_knr.setText("Bungalow für den ausgwählten Zeitraum schon besetzt.");
 					 textField_Start.setText(null);
 					 textField_End.setText(null);
+					 return;
 					 
 				 }
-				 else {
-					 
-					 	int knr;
-						knr = random.nextInt(9999);
-						 
-						Buchungen[nr][0] = bnr;
-						Buchungen[nr][1] = start;
-						Buchungen[nr][2] = end;
-						Buchungen[nr][3] = pers;
-						Buchungen[nr][4] = knr;
-						
-						text_knr.setText("" + Buchungen[nr][4]);
-						
-						textField_Start.setText(null);
-						textField_End.setText(null);
-						textField_Person.setText(null);
-				 }
+				 
 			 }
 			 
-			 else {
-				 
-				 int knr;
-				 knr = random.nextInt(9999);
-				 
-				 Buchungen[nr][0] = bnr;
-				 Buchungen[nr][1] = start;
-				 Buchungen[nr][2] = end;
-				 Buchungen[nr][3] = pers;
-				 Buchungen[nr][4] = knr;
-				 
-				 text_knr.setText(""+Buchungen[nr][4]);
-				 
-				 textField_Start.setText(null);
-				 textField_End.setText(null);
-				 textField_Person.setText(null);
-				 
-			 }
 			 
 			}
-			nr++;
-	}}
+		
+		
+			int knr;
+			knr = random.nextInt(9999);
+		 
+			reservierungen.add(new Reservierung(bnr,start,end,pers,knr));
+		
+			text_knr.setText("" + knr);
+		
+			textField_Start.setText(null);
+			textField_End.setText(null);
+			textField_Person.setText(null);
+		
+	}
 	
 	public void check() {
 		
+
 	
 		bnr = Integer.parseInt((String) combo_select.getSelectedItem());
-		for (int i = 0; i < nr+1; i++) {
-			 if(Buchungen[i][0]== bnr) {
+		for (Reservierung reservierung : reservierungen) {
+			 if(reservierung.bnr == bnr) {
 				 
-	text_out.setText("Bungalo Nr." + Buchungen[0][0] + "\n"
-			+ "Startwoche: " + Buchungen[0][1] + "\n"
-			+ "Endwoche: " + Buchungen[0][2] + "\n"
-			+ "Anzahl Personen: " + Buchungen[0][3] + "\n"
-			+ "Kundennummer: " + Buchungen[0][4]);
+	text_out.setText(text_out.getText()+ "Bungalo Nr." + reservierung.bnr + "\n"
+			+ "Startwoche: " + reservierung.start + "\n"
+			+ "Endwoche: " + reservierung.end + "\n"
+			+ "Anzahl Personen: " + reservierung.pers + "\n"
+			+ "Kundennummer: " + reservierung.knr + "\n" + "\n");
 	
 		}}
 		
