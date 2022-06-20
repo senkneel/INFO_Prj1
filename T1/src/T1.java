@@ -1,9 +1,9 @@
-/* VERSION DAY9
+/* VERSION DAY10
  * -SOLL DIE FRONT SEIN
  * -AUTHOR: LEONARD
  * -Benötigte Extraklassen: Reservierung
  * -Backbone wurde in T1 aufgelöst
- * -TODO: STONIERUNG, SAVEN, EVT. JPANEL SWITCHEN!
+ * -TODO: SAVEN, EVT. JPANEL SWITCHEN!
  */
 import java.awt.EventQueue;
 
@@ -89,17 +89,26 @@ public class T1 {
 	 */
 	private void initialize() {
 		
+		//Random objekt
 		random = new Random();
+		
+		//Arraylist mit den Daten
 		reservierungen = new ArrayList<Reservierung>();
 		
+		
+		//JFrame erzeugen
 		frmBlackwaterResortReservation = new JFrame();
 		frmBlackwaterResortReservation.setTitle("Blackwater Resort Reservation Tool");
 		frmBlackwaterResortReservation.getContentPane().setBackground(Color.WHITE);
 		
+		
+		//Haupt JPane erzeugen
 		JLayeredPane layeredPane = new JLayeredPane();
 		frmBlackwaterResortReservation.getContentPane().add(layeredPane, BorderLayout.CENTER);
 		
-		JLabel lblTheFlyingDuchman = new JLabel("Blackwater Resort Reservation");
+		
+		//Labels zur beschriftung erzeugen
+		JLabel lblTheFlyingDuchman = new JLabel("Blackwater Resort Reservierung");
 		lblTheFlyingDuchman.setFont(new Font("Tempus Sans ITC", Font.BOLD | Font.ITALIC, 30));
 		lblTheFlyingDuchman.setBounds(10, 11, 471, 40);
 		layeredPane.add(lblTheFlyingDuchman);
@@ -114,6 +123,17 @@ public class T1 {
 		lblEndWoche.setBounds(10, 130, 160, 40);
 		layeredPane.add(lblEndWoche);
 		
+		JLabel lblAvailableBungalos = new JLabel("Bungalow Auswahl:");
+		lblAvailableBungalos.setFont(new Font("Century Gothic", Font.PLAIN, 16));
+		lblAvailableBungalos.setBounds(10, 250, 160, 40);
+		
+		JLabel lblAnzahlPersonen = new JLabel("Anzahl Personen:");
+		lblAnzahlPersonen.setFont(new Font("Century Gothic", Font.PLAIN, 16));
+		lblAnzahlPersonen.setBounds(370, 80, 160, 40);
+		layeredPane.add(lblAnzahlPersonen);
+		
+		
+		//Eingabefelder erzeugen
 		textField_End = new JTextField();
 		textField_End.setColumns(10);
 		textField_End.setBounds(180, 130, 180, 40);
@@ -124,28 +144,21 @@ public class T1 {
 		textField_Start.setBounds(180, 80, 180, 40);
 		layeredPane.add(textField_Start);
 		
+		textField_Person = new JTextField();
+		textField_Person.setColumns(10);
+		textField_Person.setBounds(540, 80, 180, 40);
+		layeredPane.add(textField_Person);
+		
+		
+		//Progressbar um fortschritt der reservierung zu zeigen (Not working)
 		JProgressBar progressBar = new JProgressBar();
 		progressBar.setBackground(Color.CYAN);
 		progressBar.setForeground(Color.CYAN);
 		progressBar.setBounds(0, 499, 780, 14);
 		layeredPane.add(progressBar);
 		
-		JLabel lblAvailableBungalos = new JLabel("Select Bungalo:");
-		lblAvailableBungalos.setFont(new Font("Century Gothic", Font.PLAIN, 16));
-		lblAvailableBungalos.setBounds(10, 250, 160, 40);
 
-		
-		JLabel lblAnzahlPersonen = new JLabel("Anzahl Personen:");
-		lblAnzahlPersonen.setFont(new Font("Century Gothic", Font.PLAIN, 16));
-		lblAnzahlPersonen.setBounds(370, 80, 160, 40);
-		layeredPane.add(lblAnzahlPersonen);
-		
-		textField_Person = new JTextField();
-		textField_Person.setColumns(10);
-		textField_Person.setBounds(540, 80, 180, 40);
-		layeredPane.add(textField_Person);
-		
-		//TEXTPANES
+		//Textpanes der Bungalows erzeugen
 		JTextPane textPane_B1 = new JTextPane();
 		textPane_B1.setText("1");
 		textPane_B1.setBounds(180, 250, 100, 40);
@@ -187,7 +200,7 @@ public class T1 {
 		textPane_B8.setBounds(510, 319, 100, 40);
 		
 		
-		//SELECTORS
+		//Buttons zum auswählen des Bungalows in einer ButtonGroup, sodass man nur ein auswählen kann
 		ButtonGroup bg = new ButtonGroup();
 		
 		rdbtn_p1 = new JRadioButton("2 Personen");
@@ -220,6 +233,8 @@ public class T1 {
 		rdbtn_p5 = new JRadioButton("6 Personen");
 		rdbtn_p5.setBounds(400, 290, 100, 23);
 		
+		
+		//Buttons der ButtonGroup hinzufügen
 		bg.add(rdbtn_p1);
 		bg.add(rdbtn_p2);
 		bg.add(rdbtn_p3);
@@ -235,14 +250,24 @@ public class T1 {
 		
 
 		
-		//BUTTONS
+		//BUTTON zum reserviern eines Bungalows
 		JButton btnReserve = new JButton("Reserviere Bungalow");
 		btnReserve.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				reserve(Integer.parseInt(textField_Start.getText()),Integer.parseInt(textField_End.getText()),Integer.parseInt(textField_Person.getText()));
-			
-			
+				
+				//Versuche die werte zu nutzen
+				try {
+					reserve(Integer.parseInt(textField_Start.getText()),Integer.parseInt(textField_End.getText()),Integer.parseInt(textField_Person.getText()));
+					}
+				
+				//Fehlermeldung falls Text eingegeben wurde
+				catch (NumberFormatException ex) {
+					text_knr.setText("Bitte nur Nummern in der Eingabe benutzen!");
+				}
+				
+				
+				//TextPanes, Radio Buttons und Reservierungs Button unsichtbar machen
 				textPane_B1.setVisible(false);
 				textPane_B2.setVisible(false);
 				textPane_B3.setVisible(false);
@@ -269,6 +294,8 @@ public class T1 {
 			}
 		});
 		
+		
+		//Browse und Reserve Button, Textpanes und RadioButtons dem Fenster hinzufügen
 		layeredPane.add(lblAvailableBungalos);
 		
 		layeredPane.add(textPane_B1);
@@ -295,6 +322,8 @@ public class T1 {
 		
 		layeredPane.add(btnReserve);
 		
+		
+		//Browse & Reserve Button, Textpanes und RadioButtons unsichtbar machen
 		lblAvailableBungalos.setVisible(false);
 		
 		textPane_B1.setVisible(false);
@@ -321,6 +350,8 @@ public class T1 {
 		
 		btnReserve.setVisible(false);
 		
+		
+		
 		btnReserve.setFont(new Font("Dialog", Font.ITALIC, 15));
 		btnReserve.setBackground(Color.WHITE);
 		btnReserve.setBounds(180, 388, 210, 40);
@@ -331,6 +362,35 @@ public class T1 {
 		btnBrowse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				//Resettet die Kundennummer und Fehlerausgabe
+				text_knr.setText(null);
+				
+				try {
+				
+				//1-2 Personen
+				if(Integer.parseInt(textField_Person.getText())> 0 && Integer.parseInt(textField_Person.getText()) <= 2) {
+					textPane_B1.setBackground(Color.GREEN);
+					textPane_B2.setBackground(Color.GREEN);
+					textPane_B3.setBackground(Color.YELLOW);
+					textPane_B4.setBackground(Color.YELLOW);
+					textPane_B5.setBackground(Color.YELLOW);
+					textPane_B6.setBackground(Color.YELLOW);
+					textPane_B7.setBackground(Color.YELLOW);
+					textPane_B8.setBackground(Color.YELLOW);
+					textPane_B9.setBackground(Color.YELLOW);
+					textPane_B10.setBackground(Color.YELLOW);
+						
+					rdbtn_p1.setEnabled(true);
+					rdbtn_p2.setEnabled(true);
+					rdbtn_p3.setEnabled(true);
+					rdbtn_p4.setEnabled(true);
+					rdbtn_p5.setEnabled(true);
+					rdbtn_p6.setEnabled(true);
+					rdbtn_p7.setEnabled(true);
+					rdbtn_p8.setEnabled(true);			
+				}	
+				
+				//3-4 Personen
 				if(Integer.parseInt(textField_Person.getText())> 2 && Integer.parseInt(textField_Person.getText()) <= 4) {
 					textPane_B1.setBackground(Color.RED);
 					textPane_B2.setBackground(Color.RED);
@@ -441,8 +501,14 @@ public class T1 {
 					
 					btnReserve.setVisible(true);
 				
+				}
+				
+				
+					//Fehlermeldung falls Text eingegeben wurde
+					catch (NumberFormatException ex) {
+							text_knr.setText("Bitte nur Nummern in der Eingabe benutzen!");
 			}
-		});
+		}});
 		btnBrowse.setBounds(540, 130, 180, 40);
 		layeredPane.add(btnBrowse);
 		
@@ -452,39 +518,42 @@ public class T1 {
 		layeredPane.add(separator);
 		
 		text_out = new JTextArea();
+		text_out.setWrapStyleWord(true);
 		text_out.setRows(1000);
 		text_out.setEditable(false);
-		text_out.setBounds(790, 224, 286, 279);
+		text_out.setBounds(790, 224, 436, 279);
 		layeredPane.add(text_out);
 		
-		JLabel lblBungalo = new JLabel("Bungalo:");
+		JLabel lblBungalo = new JLabel("Bungalow:");
 		lblBungalo.setFont(new Font("Dialog", Font.PLAIN, 16));
 		lblBungalo.setBounds(795, 80, 75, 40);
 		layeredPane.add(lblBungalo);
 		
-		JLabel lblCheck = new JLabel("Check Reservation");
+		JLabel lblCheck = new JLabel("Checken und Stonieren");
 		lblCheck.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 30));
 		lblCheck.setBounds(795, 11, 471, 40);
 		layeredPane.add(lblCheck);
 		
 		combo_select = new JComboBox();
 		combo_select.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}));
-		combo_select.setBounds(880, 80, 60, 40);
+		combo_select.setBounds(880, 80, 75, 40);
 		layeredPane.add(combo_select);
 		
-		JButton btnCheck = new JButton("Check Bungalo");
+		JButton btnCheck = new JButton("Check Bungalow");
 		btnCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				//Check Methode aufrufen
 				check();
 			}
 		});
 		
 		btnCheck.setFont(new Font("Dialog", Font.ITALIC, 15));
 		btnCheck.setBackground(Color.WHITE);
-		btnCheck.setBounds(795, 130, 180, 40);
+		btnCheck.setBounds(795, 130, 160, 40);
 		layeredPane.add(btnCheck);
 		
-		JLabel lblknr = new JLabel("Ihre Kundenummer:");
+		JLabel lblknr = new JLabel("Ausgabe:");
 		lblknr.setFont(new Font("Dialog", Font.PLAIN, 16));
 		lblknr.setBounds(10, 449, 160, 40);
 		layeredPane.add(lblknr);
@@ -505,34 +574,55 @@ public class T1 {
 		combo_select_jahr.setBounds(180, 180, 60, 40);
 		layeredPane.add(combo_select_jahr);
 		
-		JButton btnSwitch = new JButton("S");
+		JButton btnSwitch = new JButton("Stoniere Reservierung");
 		btnSwitch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				//stonierung methode aufrufen
 				stoniere();
 			}
 		});
 		btnSwitch.setFont(new Font("Dialog", Font.ITALIC, 15));
 		btnSwitch.setBackground(Color.WHITE);
-		btnSwitch.setBounds(740, 0, 40, 40);
+		btnSwitch.setBounds(982, 130, 205, 40);
 		layeredPane.add(btnSwitch);
 		
 		textField_stonieren = new JTextField();
 		textField_stonieren.setColumns(10);
-		textField_stonieren.setBounds(561, 0, 180, 40);
+		textField_stonieren.setBounds(1112, 80, 75, 40);
 		layeredPane.add(textField_stonieren);
+		
+		JLabel lblKundennummer = new JLabel("Kundennummer:");
+		lblKundennummer.setFont(new Font("Dialog", Font.PLAIN, 16));
+		lblKundennummer.setBounds(982, 80, 120, 40);
+		layeredPane.add(lblKundennummer);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setOrientation(SwingConstants.VERTICAL);
+		separator_1.setBounds(967, 61, 5, 128);
+		layeredPane.add(separator_1);
+		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setBounds(780, 188, 426, 5);
+		layeredPane.add(separator_2);
+		
+		JSeparator separator_2_1 = new JSeparator();
+		separator_2_1.setBounds(780, 61, 426, 5);
+		layeredPane.add(separator_2_1);
 
-		frmBlackwaterResortReservation.setBounds(100, 100, 1100, 550);
+		frmBlackwaterResortReservation.setBounds(100, 100, 1220, 550);
 		frmBlackwaterResortReservation.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
+	//reserve um ersten fehler zu korregieren
 	public void reserve(int start, int end, int pers) {
 		
-
-		if (Integer.parseInt(textField_Start.getText()) <= 1 || Integer.parseInt(textField_Start.getText()) >= 52) {
+		//Zahlenfehler bei eingabe erkennen
+		if (Integer.parseInt(textField_Start.getText()) < 0 || Integer.parseInt(textField_Start.getText()) > 52) {
 			text_knr.setText("Fehler bei Eingabe der Startwoche! [1-52]"); textField_Start.setText(null);
 		}
 
-		else if (Integer.parseInt(textField_End.getText()) <= 1 || Integer.parseInt(textField_End.getText()) >= 52) {
+		else if (Integer.parseInt(textField_End.getText()) < 0 || Integer.parseInt(textField_End.getText()) > 52) {
 			text_knr.setText("Fehler bei Eingabe der Endwoche! [1-52]"); textField_End.setText(null);
 		}
 		
@@ -540,12 +630,13 @@ public class T1 {
 			text_knr.setText("Endwoche kann nicht vor der Startwoche sein! [SW<EW]"); textField_End.setText(null);
 		}
 		
-		else if (Integer.parseInt(textField_Person.getText()) <= 0 || Integer.parseInt(textField_Person.getText()) > 10) {
+		else if (Integer.parseInt(textField_Person.getText()) < 1 || Integer.parseInt(textField_Person.getText()) > 10) {
 			text_knr.setText("Fehler bei Eingabe der Anzahl von Personen! [1-10]"); textField_Person.setText(null);
 		}
 		
 		else {
 			
+			//Gewählter Bungalow in Nummer umwandeln
 			if(rdbtn_p1.isSelected()) 
 				bnr=1;
 			if(rdbtn_p2.isSelected()) 
@@ -567,10 +658,11 @@ public class T1 {
 			if(rdbtn_p10.isSelected()) 
 				bnr=10;
 			
+			//Weitergabe an versuch
 			versuch(start, end, pers, Integer.parseInt((String) combo_select_jahr.getSelectedItem()));
 	}}
 	
-	
+	//Reservierung durchführen
 	public void versuch(int start, int end, int pers, int jahr) {
 		
 		for (Reservierung reservierung : reservierungen) {
@@ -596,7 +688,7 @@ public class T1 {
 		 
 			reservierungen.add(new Reservierung(bnr,start,end,pers,knr,jahr));
 		
-			text_knr.setText("" + knr);
+			text_knr.setText("Ihre Kundennummer: " + knr);
 		
 			textField_Start.setText(null);
 			textField_End.setText(null);
@@ -604,6 +696,7 @@ public class T1 {
 		
 	}
 	
+	//Daten eines Bungalows checken
 	public void check() {
 		
 		text_out.setText(null);
@@ -623,14 +716,25 @@ public class T1 {
 		
 	}
 	
-	public void stoniere(); {
-		knr = Integer.parseInt(textField_stonieren.getText());
+	public void stoniere() {
 		
-		for (Reservierung reservierung : reservierungen) {
-			if(reservierung.knr == knr) {
-
+		//Resettet die Kundennummer und Fehlerausgabe
+		text_knr.setText(null);
+		
+		try {
+			knr = Integer.parseInt(textField_stonieren.getText());
+		} catch (NumberFormatException ex) {
+			text_knr.setText("Bitte nur Nummern in der Eingabe benutzen!");
+		}
+		
+//		for (Reservierung reservierung : reservierungen) {
+//			if(reservierung.knr == knr) {
+//				reservierungen.remove();
 				
-				
-			}}
+				for (int i = reservierungen.size() - 1; i >= 0; i--) {
+					Reservierung c = reservierungen.get(i);
+					if (c.knr == knr) {
+						reservierungen.remove(i);
+					}}
 	}
 }
