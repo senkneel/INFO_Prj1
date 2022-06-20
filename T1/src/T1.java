@@ -1,8 +1,9 @@
-/* VERSION DAY8
+/* VERSION DAY9
  * -SOLL DIE FRONT SEIN
- * -AUTHOR = LEONARD
+ * -AUTHOR: LEONARD
+ * -Benötigte Extraklassen: Reservierung
  * -Backbone wurde in T1 aufgelöst
- * Noch zu fixen: -fehlermeldung bei txt
+ * -TODO: STONIERUNG, SAVEN, EVT. JPANEL SWITCHEN!
  */
 import java.awt.EventQueue;
 
@@ -31,10 +32,11 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.JTextArea;
 import javax.swing.JSpinner;
+import javax.swing.JScrollBar;
 
 public class T1 {
 
-	private JFrame frmBlackwaterResortReservation;
+	private JFrame frmBlackwaterResortReservation; 
 	private JTextField textField_End;
 	private JTextField textField_Start;
 	private JTextField textField_Person;
@@ -51,10 +53,13 @@ public class T1 {
 	public JRadioButton rdbtn_p9;
 	public JRadioButton rdbtn_p10;
 	protected JComboBox combo_select;
+	protected JComboBox combo_select_jahr;
 	public ArrayList<Reservierung> reservierungen;
 	int nr=0;
 	int bnr=0;
+	int knr=0;
 	Random random;
+	private JTextField textField_stonieren;
 
 	/**
 	 * Launch the application.
@@ -127,7 +132,7 @@ public class T1 {
 		
 		JLabel lblAvailableBungalos = new JLabel("Select Bungalo:");
 		lblAvailableBungalos.setFont(new Font("Century Gothic", Font.PLAIN, 16));
-		lblAvailableBungalos.setBounds(10, 224, 160, 40);
+		lblAvailableBungalos.setBounds(10, 250, 160, 40);
 
 		
 		JLabel lblAnzahlPersonen = new JLabel("Anzahl Personen:");
@@ -143,77 +148,77 @@ public class T1 {
 		//TEXTPANES
 		JTextPane textPane_B1 = new JTextPane();
 		textPane_B1.setText("1");
-		textPane_B1.setBounds(180, 224, 100, 40);
+		textPane_B1.setBounds(180, 250, 100, 40);
 		
 		JTextPane textPane_B2 = new JTextPane();
 		textPane_B2.setText("2");
-		textPane_B2.setBounds(180, 293, 100, 40);
+		textPane_B2.setBounds(180, 319, 100, 40);
 
 		JTextPane textPane_B6 = new JTextPane();
 		textPane_B6.setText("6");
-		textPane_B6.setBounds(400, 293, 100, 40);
+		textPane_B6.setBounds(400, 319, 100, 40);
 		
 		JTextPane textPane_B7 = new JTextPane();
 		textPane_B7.setText("7");
-		textPane_B7.setBounds(510, 224, 100, 40);
+		textPane_B7.setBounds(510, 250, 100, 40);
 		
 		JTextPane textPane_B4 = new JTextPane();
 		textPane_B4.setText("4");
-		textPane_B4.setBounds(290, 293, 100, 40);
+		textPane_B4.setBounds(290, 319, 100, 40);
 
 		JTextPane textPane_B5 = new JTextPane();
 		textPane_B5.setText("5");
-		textPane_B5.setBounds(400, 224, 100, 40);
+		textPane_B5.setBounds(400, 250, 100, 40);
 
 		JTextPane textPane_B9 = new JTextPane();
 		textPane_B9.setText("9");
-		textPane_B9.setBounds(620, 224, 100, 40);
+		textPane_B9.setBounds(620, 250, 100, 40);
 		
 		JTextPane textPane_B10 = new JTextPane();
 		textPane_B10.setText("10");
-		textPane_B10.setBounds(620, 293, 100, 40);
+		textPane_B10.setBounds(620, 319, 100, 40);
 		
 		JTextPane textPane_B3 = new JTextPane();
 		textPane_B3.setText("3");
-		textPane_B3.setBounds(290, 224, 100, 40);
+		textPane_B3.setBounds(290, 250, 100, 40);
 		
 		JTextPane textPane_B8 = new JTextPane();
 		textPane_B8.setText("8");
-		textPane_B8.setBounds(510, 293, 100, 40);
+		textPane_B8.setBounds(510, 319, 100, 40);
 		
 		
 		//SELECTORS
 		ButtonGroup bg = new ButtonGroup();
 		
-		rdbtn_p1 = new JRadioButton("2 Persons");
-		rdbtn_p1.setBounds(180, 264, 100, 23);
+		rdbtn_p1 = new JRadioButton("2 Personen");
+		rdbtn_p1.setBounds(180, 290, 100, 23);
 		
-		rdbtn_p4 = new JRadioButton("4 Persons");
-		rdbtn_p4.setBounds(290, 333, 100, 23);
+		rdbtn_p4 = new JRadioButton("4 Personen");
+		rdbtn_p4.setBounds(290, 359, 100, 23);
 		
-		rdbtn_p10 = new JRadioButton("10 Persons");
-		rdbtn_p10.setBounds(620, 333, 100, 23);
+		rdbtn_p10 = new JRadioButton("10 Personen");
+		rdbtn_p10.setBounds(620, 359, 100, 23);
 		
-		rdbtn_p7 = new JRadioButton("8 Persons");
-		rdbtn_p7.setBounds(510, 264, 100, 23);
+		rdbtn_p7 = new JRadioButton("8 Personen");
+		rdbtn_p7.setBounds(510, 290, 100, 23);
 		
-		rdbtn_p9 = new JRadioButton("10 Persons");
-		rdbtn_p9.setBounds(620, 264, 100, 23);
+		rdbtn_p9 = new JRadioButton("10 Personen");
+		rdbtn_p9.setBounds(620, 290, 100, 23);
 		
-		rdbtn_p8 = new JRadioButton("8 Persons");
-		rdbtn_p8.setBounds(510, 333, 100, 23);
+		rdbtn_p8 = new JRadioButton("8 Personen");
+		rdbtn_p8.setBounds(510, 359, 100, 23);
 		
-		rdbtn_p6 = new JRadioButton("6 Persons");
-		rdbtn_p6.setBounds(400, 333, 100, 23);
+		rdbtn_p6 = new JRadioButton("6 Personen");
+		rdbtn_p6.setBounds(400, 359, 100, 23);
 		
-		rdbtn_p2 = new JRadioButton("2 Persons");
-		rdbtn_p2.setBounds(180, 333, 100, 23);
+		rdbtn_p2 = new JRadioButton("2 Personen");
+		rdbtn_p2.setBounds(180, 359, 100, 23);
 		
-		rdbtn_p3 = new JRadioButton("4 Persons");
-		rdbtn_p3.setBounds(290, 264, 100, 23);
+		rdbtn_p3 = new JRadioButton("4 Personen");
+		rdbtn_p3.setBounds(290, 290, 100, 23);
 		
-		rdbtn_p5 = new JRadioButton("6 Persons");
-		rdbtn_p5.setBounds(400, 264, 100, 23);
+		rdbtn_p5 = new JRadioButton("6 Personen");
+		rdbtn_p5.setBounds(400, 290, 100, 23);
 		
 		bg.add(rdbtn_p1);
 		bg.add(rdbtn_p2);
@@ -231,7 +236,7 @@ public class T1 {
 
 		
 		//BUTTONS
-		JButton btnReserve = new JButton("Reserve Bungalow");
+		JButton btnReserve = new JButton("Reserviere Bungalow");
 		btnReserve.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -318,9 +323,9 @@ public class T1 {
 		
 		btnReserve.setFont(new Font("Dialog", Font.ITALIC, 15));
 		btnReserve.setBackground(Color.WHITE);
-		btnReserve.setBounds(180, 362, 210, 40);
+		btnReserve.setBounds(180, 388, 210, 40);
 		
-		JButton btnBrowse = new JButton("Browse Bungalows");
+		JButton btnBrowse = new JButton("Suche Bungalows");
 		btnBrowse.setFont(new Font("Century Gothic", Font.ITALIC, 15));
 		btnBrowse.setBackground(Color.WHITE);
 		btnBrowse.addActionListener(new ActionListener() {
@@ -447,6 +452,7 @@ public class T1 {
 		layeredPane.add(separator);
 		
 		text_out = new JTextArea();
+		text_out.setRows(1000);
 		text_out.setEditable(false);
 		text_out.setBounds(790, 224, 286, 279);
 		layeredPane.add(text_out);
@@ -488,6 +494,32 @@ public class T1 {
 		text_knr.setEditable(false);
 		text_knr.setBounds(180, 458, 590, 40);
 		layeredPane.add(text_knr);
+		
+		JLabel lblJahr = new JLabel("Jahr:");
+		lblJahr.setFont(new Font("Dialog", Font.PLAIN, 16));
+		lblJahr.setBounds(10, 180, 160, 40);
+		layeredPane.add(lblJahr);
+		
+		combo_select_jahr = new JComboBox();
+		combo_select_jahr.setModel(new DefaultComboBoxModel(new String[] {"2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030", "2031", "2032"}));
+		combo_select_jahr.setBounds(180, 180, 60, 40);
+		layeredPane.add(combo_select_jahr);
+		
+		JButton btnSwitch = new JButton("S");
+		btnSwitch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				stoniere();
+			}
+		});
+		btnSwitch.setFont(new Font("Dialog", Font.ITALIC, 15));
+		btnSwitch.setBackground(Color.WHITE);
+		btnSwitch.setBounds(740, 0, 40, 40);
+		layeredPane.add(btnSwitch);
+		
+		textField_stonieren = new JTextField();
+		textField_stonieren.setColumns(10);
+		textField_stonieren.setBounds(561, 0, 180, 40);
+		layeredPane.add(textField_stonieren);
 
 		frmBlackwaterResortReservation.setBounds(100, 100, 1100, 550);
 		frmBlackwaterResortReservation.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -535,14 +567,15 @@ public class T1 {
 			if(rdbtn_p10.isSelected()) 
 				bnr=10;
 			
-			versuch(start, end, pers);
+			versuch(start, end, pers, Integer.parseInt((String) combo_select_jahr.getSelectedItem()));
 	}}
 	
 	
-	public void versuch(int start, int end, int pers) {
+	public void versuch(int start, int end, int pers, int jahr) {
 		
 		for (Reservierung reservierung : reservierungen) {
 			 if(reservierung.bnr == bnr) {
+				 if(jahr==reservierung.jahr) {
 				 if(start >= reservierung.start && start <= reservierung.end || end >= reservierung.start && end <= reservierung.end) {
 					 
 					 text_knr.setText("Bungalow für den ausgwählten Zeitraum schon besetzt.");
@@ -552,16 +585,16 @@ public class T1 {
 					 
 				 }
 				 
-			 }
+			 }}
 			 
 			 
 			}
 		
 		
-			int knr;
+			
 			knr = random.nextInt(9999);
 		 
-			reservierungen.add(new Reservierung(bnr,start,end,pers,knr));
+			reservierungen.add(new Reservierung(bnr,start,end,pers,knr,jahr));
 		
 			text_knr.setText("" + knr);
 		
@@ -573,13 +606,14 @@ public class T1 {
 	
 	public void check() {
 		
-
+		text_out.setText(null);
 	
 		bnr = Integer.parseInt((String) combo_select.getSelectedItem());
 		for (Reservierung reservierung : reservierungen) {
 			 if(reservierung.bnr == bnr) {
 				 
 	text_out.setText(text_out.getText()+ "Bungalo Nr." + reservierung.bnr + "\n"
+			+ "Reservierungsjahr: " + reservierung.jahr + "\n"
 			+ "Startwoche: " + reservierung.start + "\n"
 			+ "Endwoche: " + reservierung.end + "\n"
 			+ "Anzahl Personen: " + reservierung.pers + "\n"
@@ -587,5 +621,16 @@ public class T1 {
 	
 		}}
 		
+	}
+	
+	public void stoniere(); {
+		knr = Integer.parseInt(textField_stonieren.getText());
+		
+		for (Reservierung reservierung : reservierungen) {
+			if(reservierung.knr == knr) {
+
+				
+				
+			}}
 	}
 }
