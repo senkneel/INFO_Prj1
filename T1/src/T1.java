@@ -1,4 +1,4 @@
-/* VERSION DAYFINAL
+/* VERSION DAY.FINAL BugFix 5
  * -SOLL DIE FRONT SEIN
  * -AUTHOR: LEONARD
  * -Benötigte Extraklassen: Reservierung
@@ -41,6 +41,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextArea;
 import javax.swing.JSpinner;
 import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 
 public class T1 {
 
@@ -70,6 +71,7 @@ public class T1 {
 	int knr=0;
 	Random random;
 	private JTextField textField_stonieren;
+	JScrollPane scrollPane;
 	String dateiName = "reservierungen.txt"; // datei name um Reservierungen zu speichern
     File file = new File(dateiName);
 
@@ -595,7 +597,7 @@ public class T1 {
 		text_out.setWrapStyleWord(true);
 		text_out.setRows(1000);
 		text_out.setEditable(false);
-		text_out.setBounds(790, 224, 312, 279);
+		text_out.setBounds(790, 224, 379, 279);
 		layeredPane.add(text_out);
 		
 		text_knr = new JTextArea();
@@ -623,6 +625,10 @@ public class T1 {
 		JSeparator separator_2_1 = new JSeparator();
 		separator_2_1.setBounds(780, 61, 426, 5);
 		layeredPane.add(separator_2_1);
+		
+		scrollPane = new JScrollPane(text_out);
+		scrollPane.setBounds(790, 203, 406, 300);
+		layeredPane.add(scrollPane);
 
 		//Fenstergröße usw. einstellen
 		frmBlackwaterResortReservation.setBounds(100, 100, 1220, 550);
@@ -683,8 +689,9 @@ public class T1 {
 		for (Reservierung reservierung : reservierungen) { //schleife läuft so oft wie viele reservierungen es gibt
 			 if(reservierung.bnr == bnr) {//wenn die reservierungen die selber bungalownummer haben
 				 if(jahr==reservierung.jahr) {//wenn die reservierungen im selben jahr sind
-				 if(start >= reservierung.start && start <= reservierung.end || end >= reservierung.start && end <= reservierung.end) {//gucken ob schon im zeitraum besetzt
+				 if(start >= reservierung.start && start <= reservierung.end || end >= reservierung.start && end <= reservierung.end || start <= reservierung.start &&  end >= reservierung.end) {//gucken ob schon im zeitraum besetzt
 					 
+						  
 					 text_knr.setText("Bungalow für den ausgwählten Zeitraum schon besetzt.");
 					 textField_Start.setText(null);
 					 textField_End.setText(null);
@@ -772,7 +779,6 @@ public class T1 {
 						
 						line = bufferedReader.readLine();
 						
-						
 					}
 					bufferedReader.close();
 					PrintWriter pw = new PrintWriter(new FileWriter(file));
@@ -785,7 +791,7 @@ public class T1 {
 					}
 					pw.close();
 					text_knr.setText("Reservierung " + knr + " wurde stoniert!"); //bestätigung der stonierung
-					 
+					
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
