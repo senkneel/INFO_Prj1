@@ -1,9 +1,9 @@
-/* VERSION DAY10
+/* VERSION DAYFINAL
  * -SOLL DIE FRONT SEIN
  * -AUTHOR: LEONARD
  * -Benötigte Extraklassen: Reservierung
  * -Backbone wurde in T1 aufgelöst
- * -TODO: SAVEN, EVT. JPANEL SWITCHEN!
+ * -TODO: EVT. JPANEL SWITCHEN!
  */
 import java.awt.EventQueue;
 
@@ -16,6 +16,14 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
 import java.awt.event.ActionEvent;
@@ -55,11 +63,15 @@ public class T1 {
 	protected JComboBox combo_select;
 	protected JComboBox combo_select_jahr;
 	public ArrayList<Reservierung> reservierungen;
+	BufferedWriter bufferedWriter;
+	BufferedReader bufferedReader;
 	int nr=0;
 	int bnr=0;
 	int knr=0;
 	Random random;
 	private JTextField textField_stonieren;
+	String dateiName = "reservierungen.txt"; // datei name um Reservierungen zu speichern
+    File file = new File(dateiName);
 
 	/**
 	 * Launch the application.
@@ -95,6 +107,7 @@ public class T1 {
 		//Arraylist mit den Daten
 		reservierungen = new ArrayList<Reservierung>();
 		
+		getsave();
 		
 		//JFrame erzeugen
 		frmBlackwaterResortReservation = new JFrame();
@@ -132,6 +145,31 @@ public class T1 {
 		lblAnzahlPersonen.setBounds(370, 80, 160, 40);
 		layeredPane.add(lblAnzahlPersonen);
 		
+		JLabel lblJahr = new JLabel("Jahr:");
+		lblJahr.setFont(new Font("Dialog", Font.PLAIN, 16));
+		lblJahr.setBounds(10, 180, 160, 40);
+		layeredPane.add(lblJahr);
+		
+		JLabel lblKundennummer = new JLabel("Kundennummer:");
+		lblKundennummer.setFont(new Font("Dialog", Font.PLAIN, 16));
+		lblKundennummer.setBounds(982, 80, 120, 40);
+		layeredPane.add(lblKundennummer);
+		
+		JLabel lblknr = new JLabel("Ausgabe:");
+		lblknr.setFont(new Font("Dialog", Font.PLAIN, 16));
+		lblknr.setBounds(10, 449, 160, 40);
+		layeredPane.add(lblknr);
+		
+		JLabel lblBungalo = new JLabel("Bungalow:");
+		lblBungalo.setFont(new Font("Dialog", Font.PLAIN, 16));
+		lblBungalo.setBounds(795, 80, 75, 40);
+		layeredPane.add(lblBungalo);
+		
+		JLabel lblCheck = new JLabel("Checken und Stonieren");
+		lblCheck.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 30));
+		lblCheck.setBounds(795, 11, 471, 40);
+		layeredPane.add(lblCheck);
+		
 		
 		//Eingabefelder erzeugen
 		textField_End = new JTextField();
@@ -149,10 +187,25 @@ public class T1 {
 		textField_Person.setBounds(540, 80, 180, 40);
 		layeredPane.add(textField_Person);
 		
+		textField_stonieren = new JTextField();
+		textField_stonieren.setColumns(10);
+		textField_stonieren.setBounds(1112, 80, 75, 40);
+		layeredPane.add(textField_stonieren);
+		
+		combo_select_jahr = new JComboBox();
+		combo_select_jahr.setModel(new DefaultComboBoxModel(new String[] {"2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030", "2031", "2032"}));
+		combo_select_jahr.setBounds(180, 180, 60, 40);
+		layeredPane.add(combo_select_jahr);
+		
+		combo_select = new JComboBox();
+		combo_select.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}));
+		combo_select.setBounds(880, 80, 75, 40);
+		layeredPane.add(combo_select);
+		
 		
 		//Progressbar um fortschritt der reservierung zu zeigen (Not working)
 		JProgressBar progressBar = new JProgressBar();
-		progressBar.setBackground(Color.CYAN);
+		progressBar.setBackground(Color.WHITE);
 		progressBar.setForeground(Color.CYAN);
 		progressBar.setBounds(0, 499, 780, 14);
 		layeredPane.add(progressBar);
@@ -245,17 +298,14 @@ public class T1 {
 		bg.add(rdbtn_p8);
 		bg.add(rdbtn_p9);
 		bg.add(rdbtn_p10);
-		
-		
-		
 
 		
-		//BUTTON zum reserviern eines Bungalows
+		//BUTTON zum reserviern eines Bungalows machen und anzeigen
 		JButton btnReserve = new JButton("Reserviere Bungalow");
 		btnReserve.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				
+				progressBar.setValue(0);
 				//Versuche die werte zu nutzen
 				try {
 					reserve(Integer.parseInt(textField_Start.getText()),Integer.parseInt(textField_End.getText()),Integer.parseInt(textField_Person.getText()));
@@ -293,6 +343,9 @@ public class T1 {
 				btnReserve.setVisible(false);
 			}
 		});
+		btnReserve.setFont(new Font("Dialog", Font.ITALIC, 15));
+		btnReserve.setBackground(Color.WHITE);
+		btnReserve.setBounds(180, 388, 210, 40);
 		
 		
 		//Browse und Reserve Button, Textpanes und RadioButtons dem Fenster hinzufügen
@@ -351,17 +404,14 @@ public class T1 {
 		btnReserve.setVisible(false);
 		
 		
-		
-		btnReserve.setFont(new Font("Dialog", Font.ITALIC, 15));
-		btnReserve.setBackground(Color.WHITE);
-		btnReserve.setBounds(180, 388, 210, 40);
-		
+		//Suche Bungalows Button machen und anzeigen
 		JButton btnBrowse = new JButton("Suche Bungalows");
 		btnBrowse.setFont(new Font("Century Gothic", Font.ITALIC, 15));
 		btnBrowse.setBackground(Color.WHITE);
 		btnBrowse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				progressBar.setValue(50);
 				//Resettet die Kundennummer und Fehlerausgabe
 				text_knr.setText(null);
 				
@@ -512,68 +562,7 @@ public class T1 {
 		btnBrowse.setBounds(540, 130, 180, 40);
 		layeredPane.add(btnBrowse);
 		
-		JSeparator separator = new JSeparator();
-		separator.setOrientation(SwingConstants.VERTICAL);
-		separator.setBounds(780, 0, 5, 510);
-		layeredPane.add(separator);
-		
-		text_out = new JTextArea();
-		text_out.setWrapStyleWord(true);
-		text_out.setRows(1000);
-		text_out.setEditable(false);
-		text_out.setBounds(790, 224, 436, 279);
-		layeredPane.add(text_out);
-		
-		JLabel lblBungalo = new JLabel("Bungalow:");
-		lblBungalo.setFont(new Font("Dialog", Font.PLAIN, 16));
-		lblBungalo.setBounds(795, 80, 75, 40);
-		layeredPane.add(lblBungalo);
-		
-		JLabel lblCheck = new JLabel("Checken und Stonieren");
-		lblCheck.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 30));
-		lblCheck.setBounds(795, 11, 471, 40);
-		layeredPane.add(lblCheck);
-		
-		combo_select = new JComboBox();
-		combo_select.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}));
-		combo_select.setBounds(880, 80, 75, 40);
-		layeredPane.add(combo_select);
-		
-		JButton btnCheck = new JButton("Check Bungalow");
-		btnCheck.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				//Check Methode aufrufen
-				check();
-			}
-		});
-		
-		btnCheck.setFont(new Font("Dialog", Font.ITALIC, 15));
-		btnCheck.setBackground(Color.WHITE);
-		btnCheck.setBounds(795, 130, 160, 40);
-		layeredPane.add(btnCheck);
-		
-		JLabel lblknr = new JLabel("Ausgabe:");
-		lblknr.setFont(new Font("Dialog", Font.PLAIN, 16));
-		lblknr.setBounds(10, 449, 160, 40);
-		layeredPane.add(lblknr);
-		
-		text_knr = new JTextArea();
-		text_knr.setFont(new Font("Bahnschrift", Font.BOLD | Font.ITALIC, 20));
-		text_knr.setEditable(false);
-		text_knr.setBounds(180, 458, 590, 40);
-		layeredPane.add(text_knr);
-		
-		JLabel lblJahr = new JLabel("Jahr:");
-		lblJahr.setFont(new Font("Dialog", Font.PLAIN, 16));
-		lblJahr.setBounds(10, 180, 160, 40);
-		layeredPane.add(lblJahr);
-		
-		combo_select_jahr = new JComboBox();
-		combo_select_jahr.setModel(new DefaultComboBoxModel(new String[] {"2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030", "2031", "2032"}));
-		combo_select_jahr.setBounds(180, 180, 60, 40);
-		layeredPane.add(combo_select_jahr);
-		
+		//Stonierungs Button machen und anzeigen
 		JButton btnSwitch = new JButton("Stoniere Reservierung");
 		btnSwitch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -587,15 +576,40 @@ public class T1 {
 		btnSwitch.setBounds(982, 130, 205, 40);
 		layeredPane.add(btnSwitch);
 		
-		textField_stonieren = new JTextField();
-		textField_stonieren.setColumns(10);
-		textField_stonieren.setBounds(1112, 80, 75, 40);
-		layeredPane.add(textField_stonieren);
+		//Check Button machen und anzeigen
+		JButton btnCheck = new JButton("Check Bungalow");
+		btnCheck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//Check Methode aufrufen
+				check();
+			}
+		});
+		btnCheck.setFont(new Font("Dialog", Font.ITALIC, 15));
+		btnCheck.setBackground(Color.WHITE);
+		btnCheck.setBounds(795, 130, 160, 40);
+		layeredPane.add(btnCheck);
 		
-		JLabel lblKundennummer = new JLabel("Kundennummer:");
-		lblKundennummer.setFont(new Font("Dialog", Font.PLAIN, 16));
-		lblKundennummer.setBounds(982, 80, 120, 40);
-		layeredPane.add(lblKundennummer);
+		//Ausgabebereiche erzeugen und anzeigen
+		text_out = new JTextArea();
+		text_out.setWrapStyleWord(true);
+		text_out.setRows(1000);
+		text_out.setEditable(false);
+		text_out.setBounds(790, 224, 312, 279);
+		layeredPane.add(text_out);
+		
+		text_knr = new JTextArea();
+		text_knr.setFont(new Font("Bahnschrift", Font.BOLD | Font.ITALIC, 20));
+		text_knr.setEditable(false);
+		text_knr.setBounds(180, 458, 590, 40);
+		layeredPane.add(text_knr);
+	
+		
+		//seperators erzeugen und anzeigen
+		JSeparator separator = new JSeparator();
+		separator.setOrientation(SwingConstants.VERTICAL);
+		separator.setBounds(780, 0, 5, 510);
+		layeredPane.add(separator);
 		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setOrientation(SwingConstants.VERTICAL);
@@ -610,6 +624,7 @@ public class T1 {
 		separator_2_1.setBounds(780, 61, 426, 5);
 		layeredPane.add(separator_2_1);
 
+		//Fenstergröße usw. einstellen
 		frmBlackwaterResortReservation.setBounds(100, 100, 1220, 550);
 		frmBlackwaterResortReservation.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -665,10 +680,10 @@ public class T1 {
 	//Reservierung durchführen
 	public void versuch(int start, int end, int pers, int jahr) {
 		
-		for (Reservierung reservierung : reservierungen) {
-			 if(reservierung.bnr == bnr) {
-				 if(jahr==reservierung.jahr) {
-				 if(start >= reservierung.start && start <= reservierung.end || end >= reservierung.start && end <= reservierung.end) {
+		for (Reservierung reservierung : reservierungen) { //schleife läuft so oft wie viele reservierungen es gibt
+			 if(reservierung.bnr == bnr) {//wenn die reservierungen die selber bungalownummer haben
+				 if(jahr==reservierung.jahr) {//wenn die reservierungen im selben jahr sind
+				 if(start >= reservierung.start && start <= reservierung.end || end >= reservierung.start && end <= reservierung.end) {//gucken ob schon im zeitraum besetzt
 					 
 					 text_knr.setText("Bungalow für den ausgwählten Zeitraum schon besetzt.");
 					 textField_Start.setText(null);
@@ -683,13 +698,18 @@ public class T1 {
 			}
 		
 		
-			
+			//kundennummer generieren und die reservierung in der ArrayList speichern
 			knr = random.nextInt(9999);
-		 
-			reservierungen.add(new Reservierung(bnr,start,end,pers,knr,jahr));
+			Reservierung reservierung = new Reservierung(bnr,start,end,pers,knr,jahr);
+			reservierungen.add(reservierung);
+			
+			//speichern
+			save(reservierung);
 		
+			//kundennummer ausgeben
 			text_knr.setText("Ihre Kundennummer: " + knr);
 		
+			//die eingabefelder zurücksetzen
 			textField_Start.setText(null);
 			textField_End.setText(null);
 			textField_Person.setText(null);
@@ -702,10 +722,10 @@ public class T1 {
 		text_out.setText(null);
 	
 		bnr = Integer.parseInt((String) combo_select.getSelectedItem());
-		for (Reservierung reservierung : reservierungen) {
-			 if(reservierung.bnr == bnr) {
+		for (Reservierung reservierung : reservierungen) { //schleife läuft so oft wie viele reservierungen es gibt
+			 if(reservierung.bnr == bnr) {//wenn die bungalow nummer gleich der gegebenen nummer ist, werden...
 				 
-	text_out.setText(text_out.getText()+ "Bungalo Nr." + reservierung.bnr + "\n"
+	text_out.setText(text_out.getText()+ "Bungalo Nr." + reservierung.bnr + "\n" //...die Daten des Bungalows ausgegeben
 			+ "Reservierungsjahr: " + reservierung.jahr + "\n"
 			+ "Startwoche: " + reservierung.start + "\n"
 			+ "Endwoche: " + reservierung.end + "\n"
@@ -726,15 +746,107 @@ public class T1 {
 		} catch (NumberFormatException ex) {
 			text_knr.setText("Bitte nur Nummern in der Eingabe benutzen!");
 		}
-		
-//		for (Reservierung reservierung : reservierungen) {
-//			if(reservierung.knr == knr) {
-//				reservierungen.remove();
 				
 				for (int i = reservierungen.size() - 1; i >= 0; i--) {
 					Reservierung c = reservierungen.get(i);
 					if (c.knr == knr) {
 						reservierungen.remove(i);
 					}}
+				
+				try {
+					bufferedReader = new BufferedReader(new FileReader(file)); //mit dem BufferedWriter wird die Datei gelesen
+					
+					String line = bufferedReader.readLine();
+					String[] data;
+					ArrayList<String> newlines = new ArrayList<String>(); //temporäre ArrayList machen wobei die daten die man behalten reinkopiert werden
+					while(line != null) { //solange die die line sicht leer ist schleife auslösen
+						
+						if(!line.isEmpty()) { //solange nicht leer
+							data =  line.split(","); //line wird beim komma gespalten und in das array data gelegt
+							if(knr != Integer.parseInt(data[4])) {
+								newlines.add(line);
+								
+								
+							}
+						}
+						
+						line = bufferedReader.readLine();
+						
+						
+					}
+					bufferedReader.close();
+					PrintWriter pw = new PrintWriter(new FileWriter(file));
+					
+					//die datei neu beschreiben
+					for (String newline : newlines) {
+						
+						pw.println(newline);
+						
+					}
+					pw.close();
+					text_knr.setText("Reservierung " + knr + " wurde stoniert!"); //bestätigung der stonierung
+					 
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+	}
+	public void getsave() {
+
+		
+		if(!file.exists()) { //datei erstellen wenn sie nicht existiert
+            try {
+                file.createNewFile();
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }}
+		
+		try {
+			bufferedReader = new BufferedReader(new FileReader(file)); //mit dem BufferedWriter wird die Datei gelesen
+			String line = bufferedReader.readLine();
+			String[] data;
+			while(line != null) { //solange die die line sicht leer ist schleife auslösen
+				
+				if(!line.isEmpty()) { //solange nicht leer
+					data =  line.split(","); //line wird beim komma gespalten und in das array data gelegt
+					reservierungen.add(new Reservierung(Integer.parseInt(data[0]),Integer.parseInt(data[1]),Integer.parseInt(data[2]),Integer.parseInt(data[3]),Integer.parseInt(data[4]),Integer.parseInt(data[5]))); //reservierung mit den daten der data array machen
+				}
+				
+				line = bufferedReader.readLine();
+				
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+	}
+	
+	//spreicherung in txt Datei wenn reserviert wird
+	public void save(Reservierung reservierung) {
+       
+        		try {
+                    bufferedWriter = new BufferedWriter(new FileWriter(file,true)); //mit dem BufferedWriter wird die Datei beschrieben
+                    bufferedWriter.write(reservierung.bnr+","+reservierung.start+","+reservierung.end+","+reservierung.pers+","+reservierung.knr+","+reservierung.jahr+ "\n" ); //die reservierung speichern
+                  
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
+                
+            
+        //BufferedWriter schließen
+        try {
+			bufferedWriter.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+		
 	}
 }
